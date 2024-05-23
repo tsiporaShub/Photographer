@@ -10,11 +10,11 @@ export const getAllPhotographyPackages = async function (req: Request, res: Resp
 
 export const addPhotographyPackage = async function (req: Request, res: Response) {
     try {
-        let p = JSON.parse(JSON.stringify(req.body));
+        const data = JSON.parse(JSON.stringify(req.body));
         const newPhotographyPackage = {
-            id: p.id,
-            type: p.type,
-            moneyToHour: p.moneyToHour,
+            id: data.id,
+            type: data.type,
+            moneyToHour: data.moneyToHour,
         }
         const PhotographyPackages = await photographyPackage_model.find();
         if (PhotographyPackages.length === 0) {
@@ -33,8 +33,8 @@ export const addPhotographyPackage = async function (req: Request, res: Response
 
 export const updatePhotographyPackage = async function (req: Request, res: Response) {
     try {
-        let data = req.body;
-        let id = Number(data.id);
+        const data = req.body;
+        const id = Number(data.id);
         if (await photographyPackage_model.findOne({ id }) === null) {
             res.status(404).send('photography package not found')
             return;

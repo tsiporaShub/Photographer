@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 
-const app = require('express').Router();
+import express from 'express';
+const app = express();
+
 import bodyParser from 'body-parser';
 
 import { getAllPhotographyPackages, addPhotographyPackage, updatePhotographyPackage, deletePhotographyPackage } from '../services/photographyPackage.service'
