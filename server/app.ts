@@ -1,13 +1,18 @@
-const express = require('express')
+import express from 'express'
 
 const app = express()
 
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
+
+import photographyPackage_Controller from './controllers/photographyPackage.controller'
+app.use(photographyPackage_Controller)
+
 
 const PORT = process.env.PORT
 
-app.listen(PORT, (error:any) => {
-    if (!error) {
+app.listen(PORT, () => {
       console.log(`http://localhost:${PORT}`)
-    } else { console.log("Error occurred, server can't start", error) }
+  }).on('error', function(err) {
+    console.log("Error occurred, server can't start", err) 
   })
