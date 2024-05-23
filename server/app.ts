@@ -12,7 +12,7 @@ app.use(photographyPackage_Controller)
 const PORT = process.env.PORT
 
 app.listen(PORT, () => {
-      console.log(`http://localhost:${PORT}`)
-  }).on('error', function(err) {
-    console.log("Error occurred, server can't start", err) 
-  })
+  console.log(`http://localhost:${PORT}`)
+}).on('error', function (err) {
+  console.log("Error occurred, server can't start", err)
+})
