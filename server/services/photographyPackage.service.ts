@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import photographyPackage_model from '../models/photographyPackage.model';
 
-
 export const getAllPhotographyPackages = async function (req: Request, res: Response) {
     const PhotographyPackages = await photographyPackage_model.find();
     res.send(PhotographyPackages);
@@ -10,7 +9,7 @@ export const getAllPhotographyPackages = async function (req: Request, res: Resp
 
 export const addPhotographyPackage = async function (req: Request, res: Response) {
     try {
-        const data = JSON.parse(JSON.stringify(req.body));
+        const data = req.body;
         const newPhotographyPackage = {
             id: data.id,
             type: data.type,
@@ -34,7 +33,7 @@ export const addPhotographyPackage = async function (req: Request, res: Response
 export const updatePhotographyPackage = async function (req: Request, res: Response) {
     try {
         const data = req.body;
-        const id = Number(data.id);
+        const id = req.params.id;
         if (await photographyPackage_model.findOne({ id }) === null) {
             res.status(404).send('photography package not found')
             return;

@@ -10,28 +10,21 @@ import { getAllPhotographyPackages, addPhotographyPackage, updatePhotographyPack
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-async function requirePhotographyPackage() {
 
-    app.get('/PhotographyPackage/getAll', async (req: Request, res: Response) => {
-        await getAllPhotographyPackages(req, res);
-    });
+export const get = async (req: Request, res: Response) => {    
+    await getAllPhotographyPackages(req, res);
+};
 
-
-    app.post('/PhotographyPackage/add', async (req: Request, res: Response) => {
-        await addPhotographyPackage(req, res);
-    })
-
-
-    app.put('/PhotographyPackage/update', async (req: Request, res: Response) => {
-        await updatePhotographyPackage(req, res);
-    })
-
-
-    app.delete('/PhotographyPackage/delete/:id', async (req: Request, res: Response) => {
-        await deletePhotographyPackage(req, res);
-    })
+export const post = async (req: Request, res: Response) => {
+    await addPhotographyPackage(req, res);
 }
 
-requirePhotographyPackage()
+export const put = async (req: Request, res: Response) => {
+    await updatePhotographyPackage(req, res);
+}
+
+export const deleteOne = async (req: Request, res: Response) => {
+    await deletePhotographyPackage(req, res);
+}
 
 export default app;
