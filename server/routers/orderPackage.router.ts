@@ -1,5 +1,5 @@
 import express from 'express';
-import { get , post , put , deleteOne } from '../controllers/photographyPackage.controller';
+import { get , post , put , deleteOne } from '../controllers/orderPackage.controller';
 
 const router =express.Router();
 

@@ -11,10 +11,10 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import photographyPackage_router from './routers/photographyPackage.router'
-import orderPackage_controller from './controllers/orderPackage.controller'
+import orderPackage_router from './routers/orderPackage.router'
 
 app.use(photographyPackage_router)
-app.use(orderPackage_controller)
+app.use(orderPackage_router)
 
 
 const PORT = process.env.PORT
