@@ -18,5 +18,3 @@ export const get = async (req: Request, res: Response) => {
 export const put = async (req: Request, res: Response) => {
     await updateBusinessDetails(req, res);
 }
-
-export default app;

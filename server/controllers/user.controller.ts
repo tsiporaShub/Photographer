@@ -5,24 +5,24 @@ const app = express();
 
 import bodyParser from 'body-parser';
 
-import { getAllPhotographyPackages, addPhotographyPackage, updatePhotographyPackage, deletePhotographyPackage } from '../services/photographyPackage.service';
+import { getAllUsers, addUser, updateUser, deleteUser } from '../services/user.service';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
 export const get = async (req: Request, res: Response) => {    
-    await getAllPhotographyPackages(req, res);
+    await getAllUsers(req, res);
 };
 
 export const post = async (req: Request, res: Response) => {
-    await addPhotographyPackage(req, res);
+    await addUser(req, res);
 }
 
 export const put = async (req: Request, res: Response) => {
-    await updatePhotographyPackage(req, res);
+    await updateUser(req, res);
 }
 
 export const deleteOne = async (req: Request, res: Response) => {
-    await deletePhotographyPackage(req, res);
+    await deleteUser(req, res);
 }

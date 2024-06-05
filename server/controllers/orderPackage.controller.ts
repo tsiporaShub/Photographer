@@ -26,5 +26,3 @@ export const put = async (req: Request, res: Response) => {
 export const deleteOne = async (req: Request, res: Response) => {
     await deleteOrderPackage(req, res);
 }
-
-export default app;
