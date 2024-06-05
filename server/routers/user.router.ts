@@ -1,11 +1,13 @@
 import express from 'express';
-import { get , post , put , deleteOne } from '../controllers/user.controller';
+import { get , signup , signin , put , deleteOne } from '../controllers/user.controller';
 
 const router =express.Router();
 
 router.get('/user',get);
 
-router.post('/user',post);
+router.post('/user/signup',signup);
+
+router.post('/user/signin',signin);
 
 router.put('/user/:id',put);
 

@@ -1,32 +1,63 @@
 import { Request, Response } from 'express';
 import user_model from '../models/user.model';
 
+import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+
+import dotenv from 'dotenv';
+dotenv.config();
+
+const secret_key = process.env.SECRET_KEY;
+
 export const getAllUsers = async function (req: Request, res: Response) {
     const users = await user_model.find();
     res.send(users);
 }
 
 
-export const addUser = async function (req: Request, res: Response) {
+export const sign_up = async function (req: Request, res: Response) {
     try {
-        const data = req.body;
-        const newUser = {
+        const data=req.body;
+        const thisUser = await user_model.findOne({ email: data.email });
+        if(thisUser){
+            res.status(409).send('this user is exist')
+            return;
+        }
+        const hasPassword = await bcrypt.hash(data.password, 10);
+        const user = {
             id: data.id,
             name: data.name,
-            password: data.password,
-            phone:data.phone,
-            email:data.email,
-            isAdmin:data.isAdmin,
+            password: hasPassword,
+            email: data.email,
+            phone: data.phone,
+            isAdmin: data.isAdmin,
+        };
+        user_model.insertMany(user)
+        res.send('sign up '+user.id+' succed');
+    } catch (err) {
+        res.status(409).send('error...')
+    }
+}
+
+
+export const sign_in = async function (req: Request, res: Response) {
+    try {
+        const { email, password } = req.body;
+        if (!(email && password)) {
+            res.status(400).send("missing details");
+            return;
         }
-        const users = await user_model.find();
-        if (users.length === 0) {
-            newUser.id = 0;
+        const user = await user_model.findOne({ email });
+        if (user && (await bcrypt.compare(password, user.password!))) {
+            const token ="Bearer " + jwt.sign({ email , isAdmin: user.isAdmin},
+                secret_key!, {
+                    expiresIn: "2h",
+                }
+            )
+            res.status(200).json(token);
+        } else {
+            res.status(409).send("illegal...");
         }
-        else {
-            newUser.id = (users[users.length - 1]).id + 1;
-        }
-        await user_model.insertMany(newUser);
-        res.send('Add new  user succeeded');
     } catch (err) {
         res.status(409).send('error...')
     }

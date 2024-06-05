@@ -5,7 +5,7 @@ const app = express();
 
 import bodyParser from 'body-parser';
 
-import { getAllUsers, addUser, updateUser, deleteUser } from '../services/user.service';
+import { getAllUsers , sign_up, sign_in, updateUser, deleteUser } from '../services/user.service';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,8 +15,12 @@ export const get = async (req: Request, res: Response) => {
     await getAllUsers(req, res);
 };
 
-export const post = async (req: Request, res: Response) => {
-    await addUser(req, res);
+export const signup = async (req: Request, res: Response) => {
+    await sign_up(req, res);
+}
+
+export const signin = async (req: Request, res: Response) => {
+    await sign_in(req, res);
 }
 
 export const put = async (req: Request, res: Response) => {
