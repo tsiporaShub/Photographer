@@ -7,6 +7,7 @@ const hourPattern = date.compile('hh:mm');
 
 const orderPackage_schema = new Schema({
     id: { type: Number },
+    userId: { type: Number },
     packageId: { type: Number },
     date: { type: datePattern },
     beginingHour: { type: hourPattern },

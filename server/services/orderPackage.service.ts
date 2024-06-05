@@ -17,6 +17,7 @@ export const addOrderPackage = async function (req: Request, res: Response) {
         const data = req.body;
         const newOrderPackage = {
             id: data.id,
+            userId: data.userId,
             packageId: data.packageId,
             date: data.date,
             beginingHour: data.beginingHour,
@@ -43,6 +44,7 @@ export const updateOrderPackage = async function (req: Request, res: Response) {
         const data = req.body;
         const newOrderPackage = {
             id: data.id,
+            userId: data.userId,
             packageId: data.packageId,
             date: data.date,
             beginingHour: data.beginingHour,
