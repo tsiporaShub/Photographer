@@ -1,7 +1,7 @@
 import express from 'express';
 import { get , post , put , deleteOne } from '../controllers/photographyPackage.controller';
 
-const router =express.Router();
+const router = express.Router();
 
 router.get('/PhotographyPackage',get);
 

@@ -1,7 +1,7 @@
 import express from 'express';
 import { get , post , put , deleteOne } from '../controllers/orderPackage.controller';
 
-const router =express.Router();
+const router = express.Router();
 
 router.get('/OrderPackage',get);
 

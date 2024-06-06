@@ -3,11 +3,11 @@ import { get , signup , signin , put , deleteOne } from '../controllers/user.con
 
 const router =express.Router();
 
+router.post('/signup',signup);
+
+router.post('/signin',signin);
+
 router.get('/user',get);
-
-router.post('/user/signup',signup);
-
-router.post('/user/signin',signin);
 
 router.put('/user/:id',put);
 
