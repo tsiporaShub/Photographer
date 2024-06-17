@@ -23,7 +23,12 @@ export const addOrderPackage = async function (req: Request, res: Response) {
             beginingHour: data.beginingHour,
             endHour: data.endHour,
         }
-        await isCorrectorderPackage(newOrderPackage)
+        await isCorrectorderPackage(newOrderPackage);
+        try{
+            await isAvailableTime(newOrderPackage);
+        } catch (err) {
+            res.status(400).send('' + err)
+        }
         const orderPackages = await orderPackage_model.find();
         if (orderPackages.length === 0) {
             newOrderPackage.id = 0;
@@ -51,6 +56,11 @@ export const updateOrderPackage = async function (req: Request, res: Response) {
             endHour: data.endHour,
         }
         await isCorrectorderPackage(newOrderPackage);
+        try{
+            await isAvailableTime(newOrderPackage);
+        } catch (err) {
+            res.status(400).send('' + err)
+        }
         const id = req.params.id;
         if (await photographyPackage_model.findOne({ id }) === null) {
             res.status(404).send('order package not found')
@@ -109,6 +119,9 @@ const isCorrectorderPackage = async function (orderPackage: any) {
     if (orderPackage.date < date.format(new Date(), datePattern)) {
         throw new Error("past date");
     }
+}
+
+const isAvailableTime = async function (orderPackage: any) {
     const allOrdersInThisDate = await orderPackage_model.find({ "date": orderPackage.date });
     allOrdersInThisDate.sort((a: any, b: any) => { return a.beginingHour < b.beginingHour ? -1 : 1 });
     allOrdersInThisDate.forEach((order: any) => {
