@@ -70,20 +70,13 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: 'rgb(66, 133, 244)', // תכלת
+      main: 'rgb(111 233 224)', // תכלת
     },
     secondary: {
-      main: 'rgb(251, 188, 5)', // צהוב
-    },
-    success: {
-      main: 'rgb(52, 168, 83)', // ירוק
-    },
-    error: {
-      main: 'rgb(234, 67, 53)', // אדום
+      main: 'rgb(255 248 115)', // צהוב
     },
     text: {
       primary: '#000000', // שחור
-      secondary: '#FFFFFF', // לבן
     },
   },
   shape: {
