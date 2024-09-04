@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
+import { SignIn } from '../api/user.api'
+import { SignInData } from '../interfaces/user.interface';
 
 const inputStyle = {
-    height: '70px', 
+    height: '70px',
     width: '300px',
 };
 
@@ -38,13 +40,29 @@ export default function SigninFormComponent() {
         }
     };
 
-    const handleLogin = async () => {
+    const handleSignIn = async () => {
         setEmailError('');
         setPasswordError('');
 
         validateEmail(email);
         validatePassword(password);
 
+        try {
+            const user: SignInData = {
+                email,
+                password
+            }
+            console.log(user);
+
+            const response = await SignIn(user);
+            console.log('Signip successful:', response);
+
+            setEmail('');
+            setPassword('');
+        }
+        catch (error) {
+            console.log('Error:', error);
+        }
     };
 
     return (
@@ -73,7 +91,7 @@ export default function SigninFormComponent() {
             <br />
             <br />
             <br />
-            <Button variant="contained" onClick={handleLogin}>signin</Button>
+            <Button variant="contained" onClick={handleSignIn}>signin</Button>
         </div>
     );
 }

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
+import { SignUp } from '../api/user.api'
+import { User } from '../interfaces/user.interface';
 
 const inputStyle = {
     height: '70px',
@@ -54,14 +56,14 @@ export default function SignupFormComponent() {
 
     const validatePhoneNumber = (phoneNumber: string) => {
         const phoneRegex = /^(?:[0-9] ?){6,14}[0-9]$/;
-    
+
         if (!phoneRegex.test(phoneNumber)) {
             setPhoneError('Phone number should be in the format "1234567890"');
             return;
         }
     };
 
-    const handleLogin = async () => {
+    const handleSignUp = async () => {
         setEmailError('');
         setPasswordError('');
         setNameError('');
@@ -72,6 +74,27 @@ export default function SignupFormComponent() {
         validateName(name);
         validatePhoneNumber(phone);
 
+        try {
+            const user: User = {
+                id: "",
+                name,
+                email,
+                password,
+                phone
+            }
+            console.log(user);
+
+            const response = await SignUp(user);
+            console.log('Signup successful:', response);
+
+            setEmail('');
+            setPassword('');
+            setPhone('');
+            setName('');
+        }
+        catch (error) {
+            console.log('Error:', error);
+        }
     };
 
     return (
@@ -124,7 +147,7 @@ export default function SignupFormComponent() {
             <br />
             <br />
             <br />
-            <Button variant="contained" onClick={handleLogin}>signup</Button>
+            <Button variant="contained" onClick={handleSignUp}>signup</Button>
         </div>
     );
 }
