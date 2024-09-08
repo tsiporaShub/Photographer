@@ -3,6 +3,8 @@ import { Box, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActio
 import { Select, MenuItem } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import { OrderPackage } from '../interfaces/orderPackage.interface';
+import { addOrder } from '../api/orderPackage.api';
 
 const packages = ['Chalake', 'NewBorn', 'SmathCake', 'Family', 'Children'];
 
@@ -11,24 +13,27 @@ const inputStyle = {
 };
 
 export default function OrderFormComponent() {
+    const userId = 1;
     const [open, setOpen] = useState(false);
-    const [packageId, setPackageId] = useState('');
+    const [packageId, setPackageId] = useState(0);
     const [date, setDate] = useState('');
     const [beginningHour, setBeginningHour] = useState('');
     const [endHour, setEndHour] = useState('');
 
     const handleAddOrder = async () => {
         try {
-            const order = {
+            const order : OrderPackage = {
                 id: 0,
-                userId: 1,
+                userId,
                 packageId,
                 date,
                 beginningHour,
                 endHour
             };
             console.log(order);
-            setPackageId('');
+            // const response = await addOrder(order);
+            // console.log('Order added successfully:', response);
+            setPackageId(0);
             setDate('');
             setBeginningHour('');
             setEndHour('');
@@ -58,7 +63,7 @@ export default function OrderFormComponent() {
                             <Select
                                 label="photography package"
                                 value={packageId}
-                                onChange={(e) => setPackageId(e.target.value)}
+                                onChange={(e) => setPackageId(Number(e.target.value))}
                                 style={inputStyle}
                             >
                                 {packages.map((option) => (
@@ -75,7 +80,7 @@ export default function OrderFormComponent() {
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
-                        InputLabelProps={{ style: { paddingLeft: '25px' } }}
+                        // InputLabelProps={{ style: { paddingLeft: '25px' } }}
                         style={inputStyle}
                     />
                     <br /><br /><br />
@@ -84,7 +89,7 @@ export default function OrderFormComponent() {
                         type="time"
                         value={beginningHour}
                         onChange={(e) => setBeginningHour(e.target.value)}
-                        InputLabelProps={{ style: { paddingLeft: '25px' } }}
+                        // InputLabelProps={{ style: { paddingLeft: '25px' } }}
                         style={inputStyle}
                     />
                     <br /><br /><br />
@@ -93,7 +98,7 @@ export default function OrderFormComponent() {
                         type="time"
                         value={endHour}
                         onChange={(e) => setEndHour(e.target.value)}
-                        InputLabelProps={{ style: { paddingLeft: '25px' } }}
+                        // InputLabelProps={{ style: { paddingLeft: '25px' } }}
                         style={inputStyle}
                     />
                 </DialogContent>
