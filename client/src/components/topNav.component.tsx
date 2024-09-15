@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import logo from '../assets/logo.png';
@@ -17,7 +18,7 @@ export default function SignFormComponent() {
       <Tabs value={value} onChange={handleChange}>
         <Tab label="home" />
         <Tab label="gallery" />
-        <Tab label="orders" />
+        <Tab label="orders"  component={Link} to="/order" />
         <Tab label="contact" />
       </Tabs>
     </Box>

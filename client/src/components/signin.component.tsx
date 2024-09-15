@@ -57,6 +57,8 @@ export default function SigninFormComponent() {
             const response = await SignIn(user);
             console.log('Signip successful:', response);
 
+            
+
             setEmail('');
             setPassword('');
         }

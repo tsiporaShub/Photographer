@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { SignUp } from '../api/user.api'
 import { User } from '../interfaces/user.interface';
+import { useDispatch } from 'react-redux';
+import { FillDataCurrentUser } from '../redux/userAction'; 
 
 const inputStyle = {
     height: '70px',
@@ -18,6 +20,8 @@ export default function SignupFormComponent() {
     const [passwordError, setPasswordError] = useState('');
     const [nameError, setNameError] = useState('');
     const [phoneError, setPhoneError] = useState('');
+
+    const dispatch = useDispatch();
 
     const validateName = (name: string) => {
         const nameRegex = /^[\u0590-\u05FFa-zA-Z]{3,15}$/;
@@ -86,6 +90,8 @@ export default function SignupFormComponent() {
 
             const response = await SignUp(user);
             console.log('Signup successful:', response);
+
+            dispatch(FillDataCurrentUser(user));
 
             setEmail('');
             setPassword('');

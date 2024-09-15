@@ -15,6 +15,7 @@ const inputStyle = {
 export default function OrderFormComponent() {
     const userId = 1;
     const [open, setOpen] = useState(false);
+    const [packageName, setPackageName] = useState('');
     const [packageId, setPackageId] = useState(0);
     const [date, setDate] = useState('');
     const [beginningHour, setBeginningHour] = useState('');
@@ -62,8 +63,8 @@ export default function OrderFormComponent() {
                             <InputLabel id="demo-simple-select-label" sx={{ width: '390px' }}>photography package</InputLabel>
                             <Select
                                 label="photography package"
-                                value={packageId}
-                                onChange={(e) => setPackageId(Number(e.target.value))}
+                                value={packageName}
+                                onChange={(e) => setPackageName(e.target.value)}
                                 style={inputStyle}
                             >
                                 {packages.map((option) => (
