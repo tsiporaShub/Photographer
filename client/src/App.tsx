@@ -5,6 +5,7 @@ import SignupFormComponent from './components/signup.component.tsx';
 import OrderFormComponent from './components/orderPackage.tsx';
 import { Provider } from 'react-redux';
 import { store } from './redux/store.ts';
+import Footer from './components/footer.component.tsx';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      <Footer />
     </Provider>
   );
 }
