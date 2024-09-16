@@ -13,12 +13,12 @@ export default function SignFormComponent() {
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', height:'50px' , width: '100%', bgcolor: 'background.paper', '& .MuiTab-root': { '&:focus': { outline: 'none' }, '&.Mui-selected': { outline: 'none' } }}}>
-      <img src={logo} alt="Logo" style={{ height: '40px', margin: '0 10px' }} />
+    <Box sx={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', marginBottom: '3px', bgcolor: 'background.paper', '& .MuiTab-root': { '&:focus': { outline: 'none' }, '&.Mui-selected': { outline: 'none' } } }}>
+      <img src={logo} alt="Logo" style={{ height: '40px', margin: '0 10px',paddingLeft:'100px' }} />
       <Tabs value={value} onChange={handleChange}>
-        <Tab label="home" />
+        <Tab label="home" component={Link} to="/home" />
         <Tab label="gallery" />
-        <Tab label="orders"  component={Link} to="/order" />
+        <Tab label="orders" component={Link} to="/order" />
         <Tab label="contact" />
       </Tabs>
     </Box>

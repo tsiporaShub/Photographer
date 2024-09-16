@@ -14,7 +14,6 @@ const useStyles = makeStyles({
     detailItem: {
         fontSize: '1rem',
         marginBottom: '5px',
-        color: 'white',
     },
 });
 
