@@ -10,9 +10,11 @@ import Footer from './components/footer.component.tsx';
 function App() {
   return (
     <Provider store={store}>
+      {/* <TopNavComponent /> */}
       <Router>
+        <TopNavComponent />
         <Routes>
-          <Route path="/" element={<TopNavComponent />} />
+          <Route path="/" element={<SigninFormComponent />} />
           <Route path="/signin" element={<SigninFormComponent />} />
           <Route path="/signup" element={<SignupFormComponent />} />
           <Route path="/order" element={<OrderFormComponent />}>

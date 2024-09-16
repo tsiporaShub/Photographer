@@ -2,11 +2,7 @@ import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { SignIn } from '../api/user.api'
 import { SignInData } from '../interfaces/user.interface';
-
-const inputStyle = {
-    height: '70px',
-    width: '300px',
-};
+import { Link } from 'react-router-dom';
 
 export default function SigninFormComponent() {
     const [email, setEmail] = useState('');
@@ -65,9 +61,29 @@ export default function SigninFormComponent() {
         }
     };
 
+    const containerStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '400px',
+        padding: '20px',
+        border: '2px solid #ccc',
+        borderRadius: '10px',
+        margin: 'auto',
+        marginTop: '10vh',
+        marginBottom: '10vh',
+    };
+
+    const inputStyle: React.CSSProperties = {
+        height: '40px',
+        width: '100%',
+        marginBottom: '30px',
+    };
+
     return (
-        <div>
-            <Typography variant="h1">Signin Form</Typography>
+        <div style={containerStyle}>
+            <Typography variant="h3">Signin Form</Typography>
             <TextField
                 label="Email"
                 value={email}
@@ -76,8 +92,6 @@ export default function SigninFormComponent() {
                 helperText={emailError}
                 style={inputStyle}
             />
-            <br />
-            <br />
             <br />
             <TextField
                 label="Password"
@@ -89,9 +103,10 @@ export default function SigninFormComponent() {
                 style={inputStyle}
             />
             <br />
-            <br />
-            <br />
-            <Button variant="contained" onClick={handleSignIn}>signin</Button>
+            <Button variant="contained" onClick={handleSignIn}>
+                Signin
+            </Button>
+            <Typography variant="body1" style={{ marginTop: '10px' }}>Not registered yet? <Button color="primary" component={Link} to="/signup">Register</Button></Typography>
         </div>
     );
 }

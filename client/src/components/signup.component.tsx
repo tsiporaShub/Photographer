@@ -1,21 +1,16 @@
 import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
-import { SignUp } from '../api/user.api'
+import { SignUp } from '../api/user.api';
 import { User } from '../interfaces/user.interface';
 import { useDispatch } from 'react-redux';
-import { FillDataCurrentUser } from '../redux/userAction'; 
-
-const inputStyle = {
-    height: '70px',
-    width: '300px',
-};
+import { FillDataCurrentUser } from '../redux/userAction';
+import { Link } from 'react-router-dom';
 
 export default function SignupFormComponent() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [nameError, setNameError] = useState('');
@@ -85,7 +80,7 @@ export default function SignupFormComponent() {
                 email,
                 password,
                 phone
-            }
+            };
             console.log(user);
 
             const response = await SignUp(user);
@@ -97,26 +92,42 @@ export default function SignupFormComponent() {
             setPassword('');
             setPhone('');
             setName('');
-        }
-        catch (error) {
+        } catch (error) {
             console.log('Error:', error);
         }
     };
 
+    const containerStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '400px',
+        padding: '20px',
+        border: '2px solid #ccc',
+        borderRadius: '10px',
+        margin: 'auto',
+        marginTop: '10vh',
+        marginBottom: '10vh',
+    };
+
+    const inputStyle: React.CSSProperties = {
+        height: '40px',
+        width: '100%',
+        marginBottom: '30px',
+    };
+
     return (
-        <div>
-            <Typography variant="h1">Signup Form</Typography>
+        <div style={containerStyle}>
+            <Typography variant="h3">Signup Form</Typography>
             <TextField
-                label="name"
-                type="text"
+                label="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 error={nameError ? true : false}
                 helperText={nameError}
                 style={inputStyle}
             />
-            <br />
-            <br />
             <br />
             <TextField
                 label="Email"
@@ -126,8 +137,6 @@ export default function SignupFormComponent() {
                 helperText={emailError}
                 style={inputStyle}
             />
-            <br />
-            <br />
             <br />
             <TextField
                 label="Password"
@@ -139,11 +148,8 @@ export default function SignupFormComponent() {
                 style={inputStyle}
             />
             <br />
-            <br />
-            <br />
             <TextField
-                label="phone"
-                type="text"
+                label="Phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 error={phoneError ? true : false}
@@ -151,9 +157,8 @@ export default function SignupFormComponent() {
                 style={inputStyle}
             />
             <br />
-            <br />
-            <br />
-            <Button variant="contained" onClick={handleSignUp}>signup</Button>
+            <Button variant="contained" onClick={handleSignUp}>Signup</Button>
+            <Typography variant="body1" style={{ marginTop: '10px' }}>Already have an account? <Button color="primary" component={Link} to="/signin">Signin</Button></Typography>
         </div>
     );
 }
