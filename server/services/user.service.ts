@@ -17,9 +17,9 @@ export const getAllUsers = async function (req: Request, res: Response) {
 
 export const sign_up = async function (req: Request, res: Response) {
     try {
-        const data=req.body;
+        const data = req.body;
         const thisUser = await user_model.findOne({ email: data.email });
-        if(thisUser){
+        if (thisUser) {
             res.status(409).send('this user is exist')
             return;
         }
@@ -33,7 +33,7 @@ export const sign_up = async function (req: Request, res: Response) {
             isAdmin: data.isAdmin,
         };
         user_model.insertMany(user)
-        res.send('sign up '+user.id+' succed');
+        res.send('sign up ' + user.id + ' succed');
     } catch (err) {
         res.status(409).send('error...')
     }
@@ -49,10 +49,10 @@ export const sign_in = async function (req: Request, res: Response) {
         }
         const user = await user_model.findOne({ email });
         if (user && (await bcrypt.compare(password, user.password!))) {
-            const token ="Bearer " + jwt.sign({ email , isAdmin: user.isAdmin},
+            const token = "Bearer " + jwt.sign({ id: user.id, email, name: user.name, phone: user.phone, isAdmin: user.isAdmin },
                 secret_key!, {
-                    expiresIn: "2h",
-                }
+                expiresIn: "2h",
+            }
             )
             res.status(200).json(token);
         } else {
