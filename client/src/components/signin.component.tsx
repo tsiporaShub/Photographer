@@ -1,14 +1,19 @@
 import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { SignIn } from '../api/user.api'
-import { SignInData } from '../interfaces/user.interface';
+import { User } from '../interfaces/user.interface';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { FillDataCurrentUser } from '../redux/userAction';
+import { jwtDecode } from 'jwt-decode'
 
 export default function SigninFormComponent() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+
+    const dispatch = useDispatch();
 
     const validateEmail = (email: string) => {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -44,14 +49,24 @@ export default function SigninFormComponent() {
         validatePassword(password);
 
         try {
-            const user: SignInData = {
+            const response = await SignIn({
                 email,
                 password
-            }
-            console.log(user);
+            });
 
-            const response = await SignIn(user);
             console.log('Signip successful:', response);
+
+            const decodedToken: any = jwtDecode(response);
+
+            const user: User = {
+                id: decodedToken.id,
+                email: decodedToken.email,
+                name: decodedToken.name,
+                phone: decodedToken.phone,
+                password: ''
+            };
+
+            dispatch(FillDataCurrentUser(user));
 
             setEmail('');
             setPassword('');
