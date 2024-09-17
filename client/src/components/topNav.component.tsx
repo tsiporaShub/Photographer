@@ -17,7 +17,7 @@ export default function SignFormComponent() {
       <img src={logo} alt="Logo" style={{ height: '40px', margin: '0 10px',paddingLeft:'100px' }} />
       <Tabs value={value} onChange={handleChange}>
         <Tab label="home" component={Link} to="/home" />
-        <Tab label="gallery" />
+        <Tab label="gallery" component={Link} to="/gallery" />
         <Tab label="orders" component={Link} to="/order" />
         <Tab label="contact" />
       </Tabs>

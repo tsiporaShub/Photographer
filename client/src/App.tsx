@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store.ts';
 import Footer from './components/footer.component.tsx';
 import HomeComponent from './components/home.component.tsx';
+import GalleryComponent from './components/gallery.component.tsx';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/signin" element={<SigninFormComponent />} />
           <Route path="/signup" element={<SignupFormComponent />} />
           <Route path="/home" element={<HomeComponent />} />
+          <Route path="/gallery" element={<GalleryComponent />} />
           <Route path="/order" element={<OrderFormComponent />}>
             {/* <Route path=":id" element={<OrderFormComponent />} /> */}
           </Route>
