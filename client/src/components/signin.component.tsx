@@ -5,7 +5,7 @@ import { User } from '../interfaces/user.interface';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FillDataCurrentUser } from '../redux/userAction';
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode';
 
 export default function SigninFormComponent() {
     const [email, setEmail] = useState('');
@@ -55,6 +55,8 @@ export default function SigninFormComponent() {
             });
 
             console.log('Signip successful:', response);
+
+            sessionStorage.setItem('token', response);
 
             const decodedToken: any = jwtDecode(response);
 

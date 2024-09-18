@@ -4,6 +4,7 @@ import { Select, MenuItem, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import { OrderPackage } from '../interfaces/orderPackage.interface';
+import { isTokenValid } from '../utils/checkToken';
 // import { addOrder } from '../api/orderPackage.api';
 
 const packages = ['Chalake', 'NewBorn', 'SmathCake', 'Family', 'Children'];
@@ -18,6 +19,7 @@ export default function OrderFormComponent() {
 
     const handleAddOrder = async () => {
         try {
+            if (!isTokenValid()) { return; }
             const order : OrderPackage = {
                 id: 0,
                 userId,

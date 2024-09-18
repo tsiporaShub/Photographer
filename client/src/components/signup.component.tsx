@@ -84,7 +84,10 @@ export default function SignupFormComponent() {
             console.log(user);
 
             const response = await SignUp(user);
+            
             console.log('Signup successful:', response);
+
+            sessionStorage.setItem('token', response);
 
             dispatch(FillDataCurrentUser(user));
 
