@@ -91,6 +91,8 @@ export default function SignupFormComponent() {
 
             dispatch(FillDataCurrentUser(user));
 
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
+
             setEmail('');
             setPassword('');
             setPhone('');

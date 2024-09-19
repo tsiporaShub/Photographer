@@ -4,9 +4,24 @@ import { Link } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import logo from '../assets/logo.png';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { FillDataCurrentUser } from '../redux/userAction';
 
 export default function SignFormComponent() {
   const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const currentUserData = sessionStorage.getItem('currentUser');
+
+    if (currentUserData) {
+      const currentUser = JSON.parse(currentUserData);
+      dispatch(FillDataCurrentUser(currentUser));
+    }
+
+  }, [dispatch]);
+
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

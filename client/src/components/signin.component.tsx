@@ -70,6 +70,8 @@ export default function SigninFormComponent() {
 
             dispatch(FillDataCurrentUser(user));
 
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
+
             setEmail('');
             setPassword('');
         }
