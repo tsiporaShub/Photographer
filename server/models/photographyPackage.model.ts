@@ -5,11 +5,7 @@ export enum PackageType { CHALAKE, SMASHCAKE, NEWBORN, FAMILY, CHILDREN }
 
 const photographyPackage_schema = new Schema({
     id: { type: Number },
-    type: {
-        type: Number,
-        enum: PackageType,
-        default: 'CHALAKE'
-    },
+    type: { type: String },
     moneyToHour: { type: Number }
 });
 
