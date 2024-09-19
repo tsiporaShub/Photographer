@@ -7,13 +7,13 @@ import { OrderPackage } from '../interfaces/orderPackage.interface';
 import { isTokenValid } from '../utils/checkToken';
 import { useSelector } from 'react-redux';
 import { getPhotographyPackages } from '../api/photographyPackage.api';
-// import { addOrder } from '../api/orderPackage.api';
+import { addOrderPackage } from '../api/orderPackage.api';
 
 export default function OrderFormComponent() {
     const userId: number = useSelector((state: any) => (state.userReducer.currentUser.id));
     const [packageId, setPackageId] = useState('');
     const [date, setDate] = useState('');
-    const [beginningHour, setBeginningHour] = useState('');
+    const [beginingHour, setBeginningHour] = useState('');
     const [endHour, setEndHour] = useState('');
     const [packages, setPackages] = useState([{ id: 0, type: '' }]);
 
@@ -38,13 +38,13 @@ export default function OrderFormComponent() {
                 id: 0,
                 userId,
                 packageId: Number(packageId),
-                date,
-                beginningHour,
+                date: date.replace(/-/g, '/'),
+                beginingHour,
                 endHour
             };
             console.log(order);
-            // const response = await addOrder(order);
-            // console.log('Order added successfully:', response);
+            const response = await addOrderPackage(order);
+            console.log('Order added successfully:', response);
             setPackageId('');
             setDate('');
             setBeginningHour('');
@@ -101,7 +101,7 @@ export default function OrderFormComponent() {
             <TextField
                 label="Beginning Hour"
                 type="time"
-                value={beginningHour}
+                value={beginingHour}
                 onChange={(e) => setBeginningHour(e.target.value)}
                 style={inputStyle}
             />

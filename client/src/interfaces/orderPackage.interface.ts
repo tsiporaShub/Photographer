@@ -4,6 +4,6 @@ export interface OrderPackage
     userId: number;
     packageId: number;
     date: string;
-    beginningHour: string;
+    beginingHour: string;
     endHour: string;
 }
