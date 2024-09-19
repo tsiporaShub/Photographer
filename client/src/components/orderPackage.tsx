@@ -1,29 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import { Select, MenuItem, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import { OrderPackage } from '../interfaces/orderPackage.interface';
 import { isTokenValid } from '../utils/checkToken';
+import { useSelector } from 'react-redux';
+import { getPhotographyPackages } from '../api/photographyPackage.api';
 // import { addOrder } from '../api/orderPackage.api';
 
-const packages = ['Chalake', 'NewBorn', 'SmathCake', 'Family', 'Children'];
-
 export default function OrderFormComponent() {
-    const userId = 1;
-    const [packageName, setPackageName] = useState('');
-    const [packageId, setPackageId] = useState(0);
+    const userId: number = useSelector((state: any) => (state.userReducer.currentUser.id));
+    const [packageId, setPackageId] = useState('');
     const [date, setDate] = useState('');
     const [beginningHour, setBeginningHour] = useState('');
     const [endHour, setEndHour] = useState('');
+    const [packages, setPackages] = useState([{ id: 0, type: '' }]);
+
+    useEffect(() => {
+        const fetchPhotographyPackage = async () => {
+            try {
+                const data = await getPhotographyPackages();
+                console.log(data);
+                setPackages(data);
+            } catch (error) {
+                console.error('Error fetching photography package:', error);
+            }
+        };
+
+        fetchPhotographyPackage();
+    }, []);
 
     const handleAddOrder = async () => {
         try {
             if (!isTokenValid()) { return; }
-            const order : OrderPackage = {
+            const order: OrderPackage = {
                 id: 0,
                 userId,
-                packageId,
+                packageId: Number(packageId),
                 date,
                 beginningHour,
                 endHour
@@ -31,7 +45,7 @@ export default function OrderFormComponent() {
             console.log(order);
             // const response = await addOrder(order);
             // console.log('Order added successfully:', response);
-            setPackageId(0);
+            setPackageId('');
             setDate('');
             setBeginningHour('');
             setEndHour('');
@@ -67,12 +81,12 @@ export default function OrderFormComponent() {
                 <InputLabel id="demo-simple-select-label">Photography Package</InputLabel>
                 <Select
                     label="Photography Package"
-                    value={packageName}
-                    onChange={(e) => setPackageName(e.target.value)}
+                    value={packageId}
+                    onChange={(e) => setPackageId(e.target.value)}
                 >
                     {packages.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
+                        <MenuItem key={option.id} value={option.id}>
+                            {option.type}
                         </MenuItem>
                     ))}
                 </Select>

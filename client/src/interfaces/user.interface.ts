@@ -3,7 +3,7 @@ export interface User {
     email: string;
     phone: string;
     password: string;
-    id: string;
+    id: number;
 }
 
 export interface SignInData {

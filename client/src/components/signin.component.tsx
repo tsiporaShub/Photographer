@@ -49,7 +49,7 @@ export default function SigninFormComponent() {
         validatePassword(password);
 
         try {
-            const response = await SignIn({
+            const response: string = await SignIn({
                 email,
                 password
             });

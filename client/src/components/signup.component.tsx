@@ -75,7 +75,7 @@ export default function SignupFormComponent() {
 
         try {
             const user: User = {
-                id: "",
+                id: 0,
                 name,
                 email,
                 password,
@@ -84,7 +84,7 @@ export default function SignupFormComponent() {
             console.log(user);
 
             const response = await SignUp(user);
-            
+
             console.log('Signup successful:', response);
 
             sessionStorage.setItem('token', response);
