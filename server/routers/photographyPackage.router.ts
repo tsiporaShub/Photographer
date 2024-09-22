@@ -1,15 +1,15 @@
 import express from 'express';
-import checkUserToken from '../middlewares/aouthenticatiom_admin.middleware';
+import checkAdminToken from '../middlewares/aouthenticatiom_admin.middleware';
 import { get , post , put , deleteOne } from '../controllers/photographyPackage.controller';
 
 const router = express.Router();
 
 router.get('/PhotographyPackage',get);
 
-router.post('/PhotographyPackage',checkUserToken,post);
+router.post('/PhotographyPackage',checkAdminToken,post);
 
-router.put('/PhotographyPackage/:id',checkUserToken,put);
+router.put('/PhotographyPackage/:id',checkAdminToken,put);
 
-router.delete('/PhotographyPackage/:id',checkUserToken,deleteOne);
+router.delete('/PhotographyPackage/:id',checkAdminToken,deleteOne);
 
 export default router;

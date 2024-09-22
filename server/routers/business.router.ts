@@ -1,11 +1,11 @@
 import express from 'express';
-import checkUserToken from '../middlewares/aouthenticatiom_admin.middleware';
-import { get , put } from '../controllers/business.controller';
+import checkAdminToken from '../middlewares/aouthenticatiom_admin.middleware';
+import { get, put } from '../controllers/business.controller';
 
-const router =express.Router();
+const router = express.Router();
 
-router.get('/business',get);
+router.get('/business', get);
 
-router.put('/business',checkUserToken,put);
+router.put('/business', checkAdminToken, put);
 
 export default router;

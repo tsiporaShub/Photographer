@@ -1,17 +1,17 @@
 import express from 'express';
-import checkUserToken from '../middlewares/aouthenticatiom_admin.middleware';
-import { get , signup , signin , put , deleteOne } from '../controllers/user.controller';
+import checkAdminToken from '../middlewares/aouthenticatiom_admin.middleware';
+import { get, signup, signin, put, deleteOne } from '../controllers/user.controller';
 
-const router =express.Router();
+const router = express.Router();
 
-router.post('/signup',signup);
+router.post('/signup', signup);
 
-router.post('/signin',signin);
+router.post('/signin', signin);
 
-router.get('/user',get);
+router.get('/user', checkAdminToken, get);
 
-router.put('/user/:id',put);
+router.put('/user/:id', checkAdminToken, put);
 
-router.delete('/user/:id',checkUserToken,deleteOne);
+router.delete('/user/:id', checkAdminToken, deleteOne);
 
 export default router;
