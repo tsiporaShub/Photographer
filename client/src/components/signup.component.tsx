@@ -79,7 +79,8 @@ export default function SignupFormComponent() {
                 name,
                 email,
                 password,
-                phone
+                phone,
+                isAdmin: false,
             };
             console.log(user);
 

@@ -65,7 +65,8 @@ export default function SigninFormComponent() {
                 email: decodedToken.email,
                 name: decodedToken.name,
                 phone: decodedToken.phone,
-                password: ''
+                password: '',
+                isAdmin: decodedToken.isAdmin
             };
 
             dispatch(FillDataCurrentUser(user));

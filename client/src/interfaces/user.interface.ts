@@ -4,6 +4,7 @@ export interface User {
     phone: string;
     password: string;
     id: number;
+    isAdmin?: boolean;
 }
 
 export interface SignInData {

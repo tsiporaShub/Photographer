@@ -1,33 +1,20 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import TopNavComponent from './components/topNav.component';
-import SigninFormComponent from './components/signin.component.tsx';
-import SignupFormComponent from './components/signup.component.tsx';
-import OrderFormComponent from './components/orderPackage.tsx';
 import { Provider } from 'react-redux';
 import { store } from './redux/store.ts';
 import Footer from './components/footer.component.tsx';
-import HomeComponent from './components/home.component.tsx';
-import GalleryComponent from './components/gallery.component.tsx';
+import RoutesComponent from './components/routes.component.tsx';
 
 function App() {
   return (
     <Provider store={store}>
-      {/* <TopNavComponent /> */}
       <Router>
         <TopNavComponent />
-        <Routes>
-          <Route path="/" element={<SigninFormComponent />} />
-          <Route path="/signin" element={<SigninFormComponent />} />
-          <Route path="/signup" element={<SignupFormComponent />} />
-          <Route path="/home" element={<HomeComponent />} />
-          <Route path="/gallery" element={<GalleryComponent />} />
-          <Route path="/order" element={<OrderFormComponent />}>
-            {/* <Route path=":id" element={<OrderFormComponent />} /> */}
-          </Route>
-        </Routes>
+        <RoutesComponent />
       </Router>
       <Footer />
     </Provider>
   );
 }
+
 export default App;
