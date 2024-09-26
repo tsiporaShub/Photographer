@@ -2,9 +2,9 @@ import axios from 'axios';
 import { domain } from '../config';
 import { OrderPackage } from '../interfaces/orderPackage.interface';
 
-export const addOrderPackage = async (data: OrderPackage) => {
-    const token = sessionStorage.getItem('token');
+const token = sessionStorage.getItem('token');
 
+export const addOrderPackage = async (data: OrderPackage) => {
     try {
         const response = await axios.post(`${domain}/OrderPackage`, data, {
             headers: {

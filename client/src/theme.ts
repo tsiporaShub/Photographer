@@ -73,7 +73,7 @@ const theme = createTheme({
       main: 'rgb(111 233 224)', // תכלת
     },
     secondary: {
-      main: 'rgb(255 248 115)', // צהוב
+      main: 'rgb(244 202 68)', // צהוב
     },
     text: {
       primary: '#000000', // שחור
