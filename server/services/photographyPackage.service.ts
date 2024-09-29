@@ -23,7 +23,7 @@ export const addPhotographyPackage = async function (req: Request, res: Response
             newPhotographyPackage.id = (PhotographyPackages[PhotographyPackages.length - 1]).id + 1;
         }
         await photographyPackage_model.insertMany(newPhotographyPackage);
-        res.send('Add new  photography package succeeded');
+        res.send(newPhotographyPackage);
     } catch (err) {
         res.status(409).send('error...')
     }
