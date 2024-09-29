@@ -1,5 +1,5 @@
 export interface BusinessDetails {
     name: string;
-    address: string;
+    adress: string;
     phone: string;
 }

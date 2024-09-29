@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
             {businessDetails && (
                 <div style={{ display: 'flex', justifyContent: 'space-around', padding: '20px' }}>
                     <Typography className={classes.detailItem}>{businessDetails.name}</Typography>
-                    <Typography className={classes.detailItem}>{businessDetails.address}</Typography>
+                    <Typography className={classes.detailItem}>{businessDetails.adress}</Typography>
                     <Typography className={classes.detailItem}>{businessDetails.phone}</Typography>
                 </div>
             )}
