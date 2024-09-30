@@ -2,8 +2,6 @@ import axios from 'axios';
 import { domain } from '../config';
 import { SignInData, User } from "../interfaces/user.interface";
 
-const token = sessionStorage.getItem('token');
-
 export const SignIn = async (data: SignInData) => {
     try {
         const response = await axios.post(`${domain}/signin`, data, {
@@ -21,7 +19,6 @@ export const SignIn = async (data: SignInData) => {
 export const SignUp = async (data: User) => {
     try {
         const response = await axios.post(`${domain}/signup`, data, {
-
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -36,6 +33,7 @@ export const SignUp = async (data: User) => {
 
 export const GetUsers = async () => {
     try {
+        const token: string | null = sessionStorage.getItem('token');
         const response = await axios.get(`${domain}/user`, {
             headers: {
                 'token': token
@@ -50,6 +48,7 @@ export const GetUsers = async () => {
 
 export const DeleteUser = async (id: number) => {
     try {
+        const token: string | null = sessionStorage.getItem('token');
         const response = await axios.delete(`${domain}/user/${id}`, {
             headers: {
                 'token': token
@@ -64,6 +63,7 @@ export const DeleteUser = async (id: number) => {
 
 export const EditUser = async (id: number, updatedData: Partial<User>) => {
     try {
+        const token: string | null = sessionStorage.getItem('token');
         const response = await axios.put(`${domain}/user/${id}`, updatedData, {
             headers: {
                 'token': token,
