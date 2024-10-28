@@ -75,6 +75,8 @@ export default function SigninFormComponent() {
 
             setEmail('');
             setPassword('');
+
+            window.location.href = 'http://localhost:5173/home';
         }
         catch (error) {
             console.log('Error:', error);

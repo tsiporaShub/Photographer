@@ -28,7 +28,42 @@ export const getOrderPackages = async () => {
         });
         return response.data;
     } catch (error) {
-        console.error('Error in API request of getting an order packages', error);
+        console.error('Error in API request of getting order packages', error);
+        throw error;
+    }
+}
+
+export const deleteOrderPackage = async (id: number) => {
+    try {
+        const token: string | null = sessionStorage.getItem('token');
+        const response = await axios.delete(`${domain}/OrderPackage/${id}`, {
+            headers: {
+                'token': token
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error in API request of delete an order package', error);
+        throw error;
+    }
+}
+
+export const EditOrderPackage = async (id: number, updatedData: Partial<OrderPackage>) => {
+    try {
+        console.log(id);
+        console.log(updatedData);
+        
+        
+        const token: string | null = sessionStorage.getItem('token');
+        const response = await axios.put(`${domain}/OrderPackage/${id}`, updatedData,{
+            headers: {
+                'token': token,
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error in API request of edit an order package', error);
         throw error;
     }
 }

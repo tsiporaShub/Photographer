@@ -62,7 +62,7 @@ export const updateOrderPackage = async function (req: Request, res: Response) {
             res.status(400).send('' + err)
         }
         const id = req.params.id;
-        if (await photographyPackage_model.findOne({ id }) === null) {
+        if (await orderPackage_model.findOne({ id }) === null) {
             res.status(404).send('order package not found')
             return;
         }
@@ -122,7 +122,7 @@ const isCorrectorderPackage = async function (orderPackage: any) {
 }
 
 const isAvailableTime = async function (orderPackage: any) {
-    const allOrdersInThisDate = await orderPackage_model.find({ "date": orderPackage.date });
+    const allOrdersInThisDate = await orderPackage_model.find({ "date": orderPackage.date, "id": { $ne: orderPackage.id } });
     allOrdersInThisDate.sort((a: any, b: any) => { return a.beginingHour < b.beginingHour ? -1 : 1 });
     allOrdersInThisDate.forEach((order: any) => {
         if (order['endHour'] > orderPackage.beginingHour) {
