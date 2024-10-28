@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FillDataCurrentUser } from '../redux/userAction';
 import { jwtDecode } from 'jwt-decode';
+import { validateEmail, validatePassword } from '../utils/validation';
+import Swal from 'sweetalert2';
 
 export default function SigninFormComponent() {
     const [email, setEmail] = useState('');
@@ -15,38 +17,21 @@ export default function SigninFormComponent() {
 
     const dispatch = useDispatch();
 
-    const validateEmail = (email: string) => {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!emailRegex.test(email)) {
-            setEmailError('Email should be in the format "example@example.com"');
-            return;
-        }
-    };
-
-    const validatePassword = (password: string) => {
-        if (!password.match(/[A-Z]/)) {
-            setPasswordError('Password must contain at least one uppercase letter');
-            return;
-        }
-
-        if (!password.match(/[0-9]/)) {
-            setPasswordError('Password must contain at least one number');
-            return;
-        }
-
-        if (password.length < 8) {
-            setPasswordError('Password must be at least 8 characters long');
-            return;
-        }
-    };
-
     const handleSignIn = async () => {
         setEmailError('');
         setPasswordError('');
 
-        validateEmail(email);
-        validatePassword(password);
+        const emailValidationResult: string = validateEmail(email);
+        if (emailValidationResult) {
+            setEmailError(emailValidationResult);
+            return;
+        }
+
+        const passwordValidationResult: string = validatePassword(password);
+        if (passwordValidationResult) {
+            setPasswordError(passwordValidationResult);
+            return;
+        }
 
         try {
             const response: string = await SignIn({
@@ -78,8 +63,12 @@ export default function SigninFormComponent() {
 
             window.location.href = 'http://localhost:5173/home';
         }
-        catch (error) {
-            console.log('Error:', error);
+        catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response.data,
+            });
         }
     };
 
