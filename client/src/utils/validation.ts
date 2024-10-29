@@ -24,7 +24,7 @@ export const validatePassword = (password: string) => {
 };
 
 export const validateName = (name: string) => {
-    const nameRegex = /^[\u0590-\u05FFa-zA-Z\s]{3,15}$/;
+    const nameRegex = /^[\u0590-\u05FFa-zA-Z\s&]{3,15}$/;
 
     if (!nameRegex.test(name)) {
         return 'Name should be between 3 and 15 characters long';
@@ -33,7 +33,7 @@ export const validateName = (name: string) => {
 };
 
 export const validatePhoneNumber = (phoneNumber: string) => {
-    const phoneRegex = /^(?:[0-9] ?){6,14}[0-9]$/;
+    const phoneRegex = /^(?:[0-9] ?-?){6,14}[0-9]$/;
 
     if (!phoneRegex.test(phoneNumber)) {
         return 'Phone number should be in the format "1234567890"';
@@ -65,6 +65,15 @@ export const validateHours = (beginningHour: string, endHour: string) => {
         return 'The end hour must be at least half an hour greater than the beginning hour.';
     }
 
+    return '';
+};
+
+export const validateAddress = (address: string) => {
+    const addressRegex = /^[a-zA-Z0-9\s,'-]{5,30}$/;
+
+    if (!addressRegex.test(address)) {
+        return 'Address should be between 5 and 30 characters long and contain only letters, numbers, spaces, commas, apostrophes, and hyphens.';
+    }
     return '';
 };
 

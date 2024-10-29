@@ -3,6 +3,8 @@ import { Typography, Button, TextField, IconButton } from '@mui/material';
 import { BusinessDetails } from '../../interfaces/businessDetails.interface';
 import { getBusinessDetails, editBusinessDetails } from '../../api/businessDetails.api';
 import CloseIcon from '@mui/icons-material/Close';
+import { validateName, validateAddress, validatePhoneNumber } from '../../utils/validation';
+import Swal from 'sweetalert2';
 
 const BusinessDetailsComponent = () => {
     const [businessDetails, setBusinessDetails] = useState<BusinessDetails | null>(null);
@@ -30,12 +32,46 @@ const BusinessDetailsComponent = () => {
     const handleSave = async () => {
         try {
             if (editedDetails) {
+                const nameValidationResult = validateName(editedDetails!.name);
+                if (nameValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: nameValidationResult,
+                    });
+                    return;
+                }
+
+                const addressValidationResult = validateAddress(editedDetails!.adress);
+                if (addressValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: addressValidationResult,
+                    });
+                    return;
+                }
+
+                const phoneValidationResult = validatePhoneNumber(editedDetails!.phone);
+                if (phoneValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: phoneValidationResult,
+                    });
+                    return;
+                }
+
                 await editBusinessDetails(editedDetails)
                 setBusinessDetails(editedDetails);
                 setIsEditing(false);
             }
-        } catch (error) {
-            console.error('Error updating business details:', error);
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response.data,
+            });
         }
     };
 
