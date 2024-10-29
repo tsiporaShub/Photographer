@@ -28,6 +28,7 @@ export const addOrderPackage = async function (req: Request, res: Response) {
             await isAvailableTime(newOrderPackage);
         } catch (err) {
             res.status(400).send('' + err)
+            return;
         }
         const orderPackages = await orderPackage_model.find();
         if (orderPackages.length === 0) {
@@ -60,6 +61,7 @@ export const updateOrderPackage = async function (req: Request, res: Response) {
             await isAvailableTime(newOrderPackage);
         } catch (err) {
             res.status(400).send('' + err)
+            return;
         }
         const id = req.params.id;
         if (await orderPackage_model.findOne({ id }) === null) {

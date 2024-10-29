@@ -8,6 +8,8 @@ import { isTokenValid } from '../utils/checkToken';
 import { useSelector } from 'react-redux';
 import { getPhotographyPackages } from '../api/photographyPackage.api';
 import { addOrderPackage } from '../api/orderPackage.api';
+import { validateFields, validateDate, validateHours } from '../utils/validation';
+import Swal from 'sweetalert2';
 
 export default function OrderFormComponent() {
     const userId: number = useSelector((state: any) => (state.userReducer.currentUser.id));
@@ -34,6 +36,37 @@ export default function OrderFormComponent() {
     const handleAddOrder = async () => {
         try {
             if (!isTokenValid()) { return; }
+
+            const fieldsError = validateFields(packageId, date, beginingHour, endHour);
+            if (fieldsError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: fieldsError,
+                });
+                return;
+            }
+
+            const dateError = validateDate(date);
+            if (dateError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: dateError,
+                });
+                return;
+            }
+
+            const hoursError = validateHours(beginingHour, endHour);
+            if (hoursError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: hoursError,
+                });
+                return;
+            }
+
             const order: OrderPackage = {
                 id: 0,
                 userId,
@@ -45,14 +78,24 @@ export default function OrderFormComponent() {
             console.log(order);
             const response = await addOrderPackage(order);
             console.log('Order added successfully:', response);
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Order added successfully!',
+            });            
             setPackageId('');
             setDate('');
             setBeginningHour('');
             setEndHour('');
-        } catch (error) {
-            console.log('Error adding order:', error);
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response.data,
+            });
         }
     };
+
 
     const containerStyle: React.CSSProperties = {
         display: 'flex',

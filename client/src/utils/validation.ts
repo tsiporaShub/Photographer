@@ -40,3 +40,31 @@ export const validatePhoneNumber = (phoneNumber: string) => {
     }
     return '';
 };
+
+export const validateFields = (packageId: string, date: string, beginingHour: string, endHour: string) => {
+    if (!packageId || !date || !beginingHour || !endHour) {
+        return 'Please fill in all fields.';
+    }
+    return '';
+};
+
+export const validateDate = (date: string) => {
+    if (new Date(date) < new Date()) {
+        return 'Date must be in the future.';
+    }
+    return '';
+};
+
+export const validateHours = (beginningHour: string, endHour: string) => {
+    const beginningTime = new Date(`01/01/2000 ${beginningHour}`);
+    const endTime = new Date(`01/01/2000 ${endHour}`);
+
+    const timeDiffInMinutes = (endTime.getTime() - beginningTime.getTime()) / 60000;
+
+    if (timeDiffInMinutes < 30) {
+        return 'The end hour must be at least half an hour greater than the beginning hour.';
+    }
+
+    return '';
+};
+
