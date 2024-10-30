@@ -72,6 +72,11 @@ export const sign_in = async function (req: Request, res: Response) {
 export const updateUser = async function (req: Request, res: Response) {
     try {
         const data = req.body;
+        const thisUser = await user_model.findOne({ email: data.email });
+        if (thisUser) {
+            res.status(409).send('this user is exist')
+            return;
+        }
         const id = req.params.id;
         if (await user_model.findOne({ id }) === null) {
             res.status(404).send('user not found')

@@ -3,6 +3,8 @@ import { Grid, Paper, Typography, IconButton, TextField, Button, Dialog, DialogT
 import { Add, Edit, Delete, Clear, Save } from '@mui/icons-material';
 import { GetUsers, DeleteUser, EditUser, SignUp } from '../../api/user.api';
 import { User } from '../../interfaces/user.interface';
+import { validateName, validateEmail, validatePassword, validatePhoneNumber } from '../../utils/validation';
+import Swal from 'sweetalert2';
 
 const Customers: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -40,13 +42,51 @@ const Customers: React.FC = () => {
         if (editingUser) {
             try {
                 const updatedUser = { ...editingUser, name: editedName, email: editedEmail, phone: editedPhone };
+                
+                const nameValidationResult = validateName(updatedUser.name);
+                if (nameValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: nameValidationResult,
+                    });
+                    return;
+                }
+    
+                const emailValidationResult = validateEmail(updatedUser.email);
+                if (emailValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: emailValidationResult,
+                    });
+                    return;
+                }
+                
+                const phoneValidationResult = validatePhoneNumber(updatedUser.phone);
+                if (phoneValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: phoneValidationResult,
+                    });
+                    return;
+                }
+
                 const response = await EditUser(editingUser.id, updatedUser);
                 console.log(response);
                 const updatedUsers = users.map((user) => (user.id === editingUser.id ? updatedUser : user));
                 setUsers(updatedUsers);
                 setEditingUser(null);
-            } catch (error) {
-                console.error('Error updating user:', error);
+                setEditedName('');
+                setEditedEmail('');
+                setEditedPhone('');
+            } catch (error: any) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.response.data,
+                });
             }
         }
     };
@@ -70,10 +110,19 @@ const Customers: React.FC = () => {
 
     const handleAddUser = () => {
         setOpenDialog(true);
+        setEditingUser(null);
+        setEditedName('');
+        setEditedEmail('');
+        setEditedPhone('');
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+        setEditedName('');
+        setEditedEmail('');
+        setEditedPhone('');
+        setEditedPassword('');
+        setIsAdmin(false);
     };
 
     const handleSaveUser = async () => {
@@ -87,18 +136,57 @@ const Customers: React.FC = () => {
         };
 
         try {
+            const nameValidationResult = validateName(newUser.name);
+            if (nameValidationResult) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: nameValidationResult,
+                });
+                return;
+            }
+
+            const emailValidationResult = validateEmail(newUser.email);
+            if (emailValidationResult) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: emailValidationResult,
+                });
+                return;
+            }
+            
+            const phoneValidationResult = validatePhoneNumber(newUser.phone);
+            if (phoneValidationResult) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: phoneValidationResult,
+                });
+                return;
+            }
+
+            const passwordValidationResult = validatePassword(newUser.password);
+            if (passwordValidationResult) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: passwordValidationResult,
+                });
+                return;
+            }
+
             const response = await SignUp(newUser);
             console.log(response);
             const updatedUsers = [...users, newUser];
             setUsers(updatedUsers);
-            setEditedName('');
-            setEditedEmail('');
-            setEditedPhone('');
-            setEditedPassword('');
-            setIsAdmin(false);
             handleCloseDialog();
-        } catch (error) {
-            console.error('Error creating user:', error);
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response.data,
+            });
         }
     };
 
@@ -153,7 +241,7 @@ const Customers: React.FC = () => {
                     </Grid>
                 ))}
             </Grid>
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <Dialog open={openDialog} onClose={handleCloseDialog}style={{ position: 'fixed', zIndex: '100' }}>
                 <DialogTitle>Add New User</DialogTitle>
                 <DialogContent style={{ width: '400px' }}>
                     <br /><br />

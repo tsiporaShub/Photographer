@@ -92,6 +92,9 @@ const PhotographyPackagesComponent: React.FC = () => {
     };
 
     const handleAddPackage = () => {
+        setEditingPackage(null);
+        setEditedType('');
+        setEditedPrice(0);
         setOpenDialog(true);
     };
 
