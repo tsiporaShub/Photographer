@@ -77,3 +77,9 @@ export const validateAddress = (address: string) => {
     return '';
 };
 
+export const validatePrice = (price: number) => {
+    if (price < 1) {
+        return 'The price must be positive';
+    }
+    return '';
+};

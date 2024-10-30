@@ -3,6 +3,8 @@ import { Grid, Paper, Typography, IconButton, TextField, Button, Dialog, DialogT
 import { Add, Edit, Delete, Clear, Save } from '@mui/icons-material';
 import { updatePhotographyPackage, deletePhotographyPackage, addPhotographyPackage, getPhotographyPackages } from '../../api/photographyPackage.api';
 import { PhotographyPackage } from '../../interfaces/photographyPackage.interface';
+import { validateName, validatePrice } from '../../utils/validation';
+import Swal from 'sweetalert2';
 
 const PhotographyPackagesComponent: React.FC = () => {
     const [packages, setPackages] = useState<PhotographyPackage[]>([]);
@@ -37,13 +39,38 @@ const PhotographyPackagesComponent: React.FC = () => {
         if (editingPackage) {
             try {
                 const updatedPackage = { ...editingPackage, type: editedType, moneyToHour: editedPrice };
+
+                const nameValidationResult = validateName(updatedPackage.type);
+                if (nameValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: nameValidationResult,
+                    });
+                    return;
+                }
+
+                const priceValidationResult = validatePrice(updatedPackage.moneyToHour);
+                if (priceValidationResult) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: priceValidationResult,
+                    });
+                    return;
+                }
+
                 const response = await updatePhotographyPackage(editingPackage.id, updatedPackage);
                 console.log(response);
                 const updatedPackages = packages.map((pkg) => (pkg.id === editingPackage.id ? updatedPackage : pkg));
                 setPackages(updatedPackages);
                 setEditingPackage(null);
-            } catch (error) {
-                console.error('Error updating package:', error);
+            } catch (error: any) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.response.data,
+                });
             }
         }
     };
@@ -80,6 +107,26 @@ const PhotographyPackagesComponent: React.FC = () => {
         };
 
         try {
+            const nameValidationResult = validateName(newPackage.type);
+            if (nameValidationResult) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: nameValidationResult,
+                });
+                return;
+            }
+
+            const priceValidationResult = validatePrice(newPackage.moneyToHour);
+            if (priceValidationResult) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: priceValidationResult,
+                });
+                return;
+            }
+
             const response = await addPhotographyPackage(newPackage);
             const addedPackage = response;
             console.log(response);
@@ -88,8 +135,12 @@ const PhotographyPackagesComponent: React.FC = () => {
             setEditedType('');
             setEditedPrice(0);
             setOpenDialog(false);
-        } catch (error) {
-            console.error('Error adding package:', error);
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response.data,
+            });
         }
     };
 
@@ -140,7 +191,7 @@ const PhotographyPackagesComponent: React.FC = () => {
                     </Grid>
                 ))}
             </Grid>
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <Dialog open={openDialog} onClose={handleCloseDialog} style={{ position: 'fixed', zIndex: '100' }}>
                 <DialogTitle>Add New Package</DialogTitle>
                 <DialogContent style={{ width: '400px' }}>
                     <br /><br />
