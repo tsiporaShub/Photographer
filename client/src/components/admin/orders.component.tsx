@@ -202,11 +202,8 @@ const Orders: React.FC = () => {
             }
 
             const response = await addOrderPackage(order);
-            console.log('Order added successfully:', response);
-
-            const updatedOrders: OrderPackage[] = await getOrderPackages();
-            setOrders(updatedOrders);
-
+            
+            setOrders([...orders, response]);
             setPackageId('');
             setUserId('');
             setDate('');

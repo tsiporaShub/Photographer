@@ -32,8 +32,15 @@ export const sign_up = async function (req: Request, res: Response) {
             phone: data.phone,
             isAdmin: data.isAdmin,
         };
+        const users = await user_model.find();
+        if (users.length === 0) {
+            user.id = 0;
+        }
+        else {
+            user.id = (users[users.length - 1]).id + 1;
+        }
         user_model.insertMany(user)
-        res.send('sign up ' + user.id + ' succed');
+        res.send(user);
     } catch (err) {
         res.status(409).send('error...')
     }

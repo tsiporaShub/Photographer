@@ -133,7 +133,7 @@ const PhotographyPackagesComponent: React.FC = () => {
             const response = await addPhotographyPackage(newPackage);
             const addedPackage = response;
             console.log(response);
-            const updatedPackages = [...packages, addedPackage];
+            const updatedPackages: any = [...packages, addedPackage];
             setPackages(updatedPackages);
             setEditedType('');
             setEditedPrice(0);

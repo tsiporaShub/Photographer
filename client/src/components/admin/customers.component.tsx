@@ -179,7 +179,7 @@ const Customers: React.FC = () => {
 
             const response = await SignUp(newUser);
             console.log(response);
-            const updatedUsers = [...users, newUser];
+            const updatedUsers = [...users, response];
             setUsers(updatedUsers);
             handleCloseDialog();
         } catch (error: any) {
