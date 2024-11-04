@@ -56,10 +56,10 @@ export const sign_in = async function (req: Request, res: Response) {
             )
             res.status(200).json(token);
         } else {
-            if(!user){
+            if (!user) {
                 res.status(409).send("email not found");
             }
-            else{
+            else {
                 res.status(409).send("incorrect password");
             }
         }
@@ -72,12 +72,12 @@ export const sign_in = async function (req: Request, res: Response) {
 export const updateUser = async function (req: Request, res: Response) {
     try {
         const data = req.body;
+        const id = req.params.id;
         const thisUser = await user_model.findOne({ email: data.email });
-        if (thisUser) {
+        if (thisUser && thisUser.id != id) {
             res.status(409).send('this user is exist')
             return;
         }
-        const id = req.params.id;
         if (await user_model.findOne({ id }) === null) {
             res.status(404).send('user not found')
             return;

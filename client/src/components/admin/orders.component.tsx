@@ -11,6 +11,8 @@ import { GetUsers } from '../../api/user.api';
 import { User } from '../../interfaces/user.interface';
 import { Add, Edit, Delete, Save, Close } from '@mui/icons-material';
 import { isTokenValid } from '../../utils/checkToken';
+import { validateFields, validateDate, validateHours } from '../../utils/validation';
+import Swal from 'sweetalert2';
 
 const localizer = momentLocalizer(moment);
 
@@ -98,12 +100,29 @@ const Orders: React.FC = () => {
                 return;
             }
 
-            console.log(selectedOrder);
-
-
             const updatedOrder: OrderPackage = {
                 ...selectedOrder,
             };
+
+            const dateError = validateDate(updatedOrder.date);
+            if (dateError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: dateError,
+                });
+                return;
+            }
+
+            const hoursError = validateHours(updatedOrder.beginingHour, updatedOrder.endHour);
+            if (hoursError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: hoursError,
+                });
+                return;
+            }
 
             const updatedOrders = orders.map(order =>
                 order.id === selectedOrder.id ? updatedOrder : order
@@ -114,8 +133,12 @@ const Orders: React.FC = () => {
             console.log('Order updated successfully:', response);
 
             setEditMode(false);
-        } catch (error) {
-            console.error('Error saving changes:', error);
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response.data,
+            });
         }
     };
 
@@ -147,6 +170,37 @@ const Orders: React.FC = () => {
                 endHour
             };
             console.log(order);
+
+            const fieldsError = validateFields(String(order.packageId), order.date, order.beginingHour, order.endHour);
+            if (fieldsError || !userId) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: fieldsError || 'Please select user',
+                });
+                return;
+            }
+
+            const dateError = validateDate(order.date);
+            if (dateError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: dateError,
+                });
+                return;
+            }
+
+            const hoursError = validateHours(order.beginingHour, order.endHour);
+            if (hoursError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: hoursError,
+                });
+                return;
+            }
+
             const response = await addOrderPackage(order);
             console.log('Order added successfully:', response);
 
@@ -159,8 +213,12 @@ const Orders: React.FC = () => {
             setBeginningHour('');
             setEndHour('');
             setOpenAddDialog(false);
-        } catch (error) {
-            console.log('Error adding order:', error);
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response.data,
+            });
         }
     };
 
@@ -189,7 +247,7 @@ const Orders: React.FC = () => {
     return (
         <div>
             <Button startIcon={<Add />} onClick={handleOpenDialog} style={{ marginLeft: '20px' }} >Add Order</Button>
-            <Dialog open={openAddDialog} onClose={handleCloseDialog}>
+            <Dialog open={openAddDialog} onClose={handleCloseDialog} style={{ position: 'fixed', zIndex: '100' }}>
                 <IconButton aria-label="close" onClick={handleCloseDialog} style={{ position: 'absolute', right: 8 }}>
                     <Close />
                 </IconButton>
@@ -260,7 +318,7 @@ const Orders: React.FC = () => {
                 eventPropGetter={eventStyleGetter}
             />
             {selectedOrder && (
-                <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <Dialog open={openDialog} onClose={handleCloseDialog} style={{ position: 'fixed', zIndex: '100' }}>
                     {editMode ? (
                         <>
                             <IconButton aria-label="close" onClick={handleCloseEdit} style={{ position: 'absolute', right: 8 }}>
@@ -275,9 +333,9 @@ const Orders: React.FC = () => {
                             <IconButton aria-label="close" onClick={handleCloseDialog} style={{ position: 'absolute', right: 8 }}>
                                 <Close />
                             </IconButton>
-                            <IconButton aria-label="edit" onClick={enterEditMode} style={{ position: 'absolute', right: 40 }}>
+                            {!validateDate(selectedOrder!.date) && <IconButton aria-label="edit" onClick={enterEditMode} style={{ position: 'absolute', right: 40 }}>
                                 <Edit />
-                            </IconButton>
+                            </IconButton>}
                             <IconButton aria-label="delete" onClick={handleDeleteOrder} style={{ position: 'absolute', right: 72 }}>
                                 <Delete />
                             </IconButton>
@@ -290,8 +348,8 @@ const Orders: React.FC = () => {
                                 <TextField
                                     label="Date"
                                     type="date"
-                                    value={moment(selectedOrder.date).format('YYYY-MM-DD')} 
-                                    onChange={(e) => setSelectedOrder({ ...selectedOrder, date: moment(e.target.value).format('YYYY/MM/DD') })} 
+                                    value={moment(selectedOrder.date).format('YYYY-MM-DD')}
+                                    onChange={(e) => setSelectedOrder({ ...selectedOrder, date: moment(e.target.value).format('YYYY/MM/DD') })}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
