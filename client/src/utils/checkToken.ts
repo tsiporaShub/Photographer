@@ -6,9 +6,9 @@ export const isTokenValid = () => {
         const decodedToken: any = jwtDecode(token);
         const currentTime: any = Date.now() / 1000;
         if (decodedToken.exp > currentTime) {
-            return true;
+            return token;
         }
     }
     window.location.href = 'http://localhost:5173/signIn';
-    return false;
+    return '';
 }

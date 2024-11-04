@@ -4,7 +4,6 @@ import { Select, MenuItem, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import { OrderPackage } from '../interfaces/orderPackage.interface';
-import { isTokenValid } from '../utils/checkToken';
 import { useSelector } from 'react-redux';
 import { getPhotographyPackages } from '../api/photographyPackage.api';
 import { addOrderPackage } from '../api/orderPackage.api';
@@ -35,8 +34,6 @@ export default function OrderFormComponent() {
 
     const handleAddOrder = async () => {
         try {
-            if (!isTokenValid()) { return; }
-
             const fieldsError = validateFields(packageId, date, beginingHour, endHour);
             if (fieldsError) {
                 Swal.fire({

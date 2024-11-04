@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { domain } from '../config';
 import { SignInData, User } from "../interfaces/user.interface";
+import { isTokenValid } from '../utils/checkToken';
 
 export const SignIn = async (data: SignInData) => {
     try {
@@ -33,7 +34,9 @@ export const SignUp = async (data: User) => {
 
 export const GetUsers = async () => {
     try {
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.get(`${domain}/user`, {
             headers: {
                 'token': token
@@ -48,7 +51,9 @@ export const GetUsers = async () => {
 
 export const DeleteUser = async (id: number) => {
     try {
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.delete(`${domain}/user/${id}`, {
             headers: {
                 'token': token
@@ -63,7 +68,9 @@ export const DeleteUser = async (id: number) => {
 
 export const EditUser = async (id: number, updatedData: Partial<User>) => {
     try {
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.put(`${domain}/user/${id}`, updatedData, {
             headers: {
                 'token': token,

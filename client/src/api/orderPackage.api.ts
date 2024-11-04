@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { domain } from '../config';
 import { OrderPackage } from '../interfaces/orderPackage.interface';
+import { isTokenValid } from '../utils/checkToken';
 
 export const addOrderPackage = async (data: OrderPackage) => {
     try {
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.post(`${domain}/OrderPackage`, data, {
             headers: {
                 'Content-Type': 'application/json',
@@ -20,7 +23,9 @@ export const addOrderPackage = async (data: OrderPackage) => {
 
 export const getOrderPackages = async () => {
     try {
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.get(`${domain}/OrderPackage`, {
             headers: {
                 'token': token
@@ -35,7 +40,9 @@ export const getOrderPackages = async () => {
 
 export const deleteOrderPackage = async (id: number) => {
     try {
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.delete(`${domain}/OrderPackage/${id}`, {
             headers: {
                 'token': token
@@ -50,11 +57,9 @@ export const deleteOrderPackage = async (id: number) => {
 
 export const EditOrderPackage = async (id: number, updatedData: Partial<OrderPackage>) => {
     try {
-        console.log(id);
-        console.log(updatedData);
-        
-        
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.put(`${domain}/OrderPackage/${id}`, updatedData,{
             headers: {
                 'token': token,

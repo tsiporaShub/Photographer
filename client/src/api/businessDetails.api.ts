@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { domain } from '../config';
 import { BusinessDetails } from '../interfaces/businessDetails.interface';
+import { isTokenValid } from '../utils/checkToken';
 
 export const getBusinessDetails = async () => {
     try {
@@ -14,7 +15,9 @@ export const getBusinessDetails = async () => {
 
 export const editBusinessDetails = async (updatedDetails: BusinessDetails) => {
     try {
-        const token: string | null = sessionStorage.getItem('token');
+        const token: string | null = isTokenValid();
+        if (!isTokenValid()) { return; }
+
         const response = await axios.put(`${domain}/business`, updatedDetails, {
             headers: {
                 'Content-Type': 'application/json',
