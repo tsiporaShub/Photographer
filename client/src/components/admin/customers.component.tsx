@@ -15,6 +15,7 @@ const Customers: React.FC = () => {
     const [editedPassword, setEditedPassword] = useState<string>('');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [openDialog, setOpenDialog] = useState<boolean>(false);
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -42,7 +43,7 @@ const Customers: React.FC = () => {
         if (editingUser) {
             try {
                 const updatedUser = { ...editingUser, name: editedName, email: editedEmail, phone: editedPhone };
-                
+
                 const nameValidationResult = validateName(updatedUser.name);
                 if (nameValidationResult) {
                     Swal.fire({
@@ -52,7 +53,7 @@ const Customers: React.FC = () => {
                     });
                     return;
                 }
-    
+
                 const emailValidationResult = validateEmail(updatedUser.email);
                 if (emailValidationResult) {
                     Swal.fire({
@@ -62,7 +63,7 @@ const Customers: React.FC = () => {
                     });
                     return;
                 }
-                
+
                 const phoneValidationResult = validatePhoneNumber(updatedUser.phone);
                 if (phoneValidationResult) {
                     Swal.fire({
@@ -155,7 +156,7 @@ const Customers: React.FC = () => {
                 });
                 return;
             }
-            
+
             const phoneValidationResult = validatePhoneNumber(newUser.phone);
             if (phoneValidationResult) {
                 Swal.fire({
@@ -190,9 +191,22 @@ const Customers: React.FC = () => {
         }
     };
 
+    const handleSort = () => {
+        const sortedCustomers = [...users];
+        if (sortOrder === 'asc') {
+            sortedCustomers.sort((a, b) => a.name.localeCompare(b.name));
+            setSortOrder('desc');
+        } else {
+            sortedCustomers.sort((a, b) => b.name.localeCompare(a.name));
+            setSortOrder('asc');
+        }
+        setUsers(sortedCustomers);
+    };
+
     return (
         <>
             <Button startIcon={<Add />} onClick={handleAddUser} style={{ marginLeft: '50px' }}>Add User</Button>
+            <Button onClick={handleSort} style={{ marginLeft: '10px' }}>Sort by Name {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}</Button>
             <Grid container spacing={2} style={{ padding: '20px 50px 50px 50px' }}>
                 {users.map((user: User, index: number) => (
                     <Grid item xs={12} sm={6} md={4} key={user.id || index}>
@@ -241,7 +255,7 @@ const Customers: React.FC = () => {
                     </Grid>
                 ))}
             </Grid>
-            <Dialog open={openDialog} onClose={handleCloseDialog}style={{ position: 'fixed', zIndex: '100' }}>
+            <Dialog open={openDialog} onClose={handleCloseDialog} style={{ position: 'fixed', zIndex: '100' }}>
                 <DialogTitle>Add New User</DialogTitle>
                 <DialogContent style={{ width: '400px' }}>
                     <br /><br />
