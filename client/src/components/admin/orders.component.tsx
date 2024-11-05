@@ -30,6 +30,7 @@ const Orders: React.FC = () => {
     const [beginingHour, setBeginningHour] = useState('');
     const [endHour, setEndHour] = useState('');
     const [note, setNote] = useState('');
+    const [editedOrder, setEditedOrder] = useState<OrderPackage | null>(null);
 
 
     useEffect(() => {
@@ -86,6 +87,7 @@ const Orders: React.FC = () => {
 
     const handleCloseEdit = () => {
         setEditMode(false);
+        setEditedOrder(null);
     };
 
     const getUserById = (userId1: number) => {
@@ -94,6 +96,7 @@ const Orders: React.FC = () => {
 
     const enterEditMode = () => {
         setEditMode(true);
+        setEditedOrder(selectedOrder);
     };
 
     const handleSaveChanges = async () => {
@@ -103,7 +106,7 @@ const Orders: React.FC = () => {
             }
 
             const updatedOrder: OrderPackage = {
-                ...selectedOrder,
+                ...editedOrder!,
             };
 
             const dateError = validateDate(updatedOrder.date);
@@ -135,6 +138,8 @@ const Orders: React.FC = () => {
             console.log('Order updated successfully:', response);
 
             setEditMode(false);
+            setSelectedOrder(editedOrder);
+            setEditedOrder(null);
         } catch (error: any) {
             Swal.fire({
                 icon: 'error',
@@ -355,8 +360,8 @@ const Orders: React.FC = () => {
                                 <TextField
                                     label="Date"
                                     type="date"
-                                    value={moment(selectedOrder.date).format('YYYY-MM-DD')}
-                                    onChange={(e) => setSelectedOrder({ ...selectedOrder, date: moment(e.target.value).format('YYYY/MM/DD') })}
+                                    value={moment(editedOrder?.date).format('YYYY-MM-DD')}
+                                    onChange={(e) => setEditedOrder({ ...editedOrder!, date: moment(e.target.value).format('YYYY/MM/DD') })}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -367,23 +372,23 @@ const Orders: React.FC = () => {
                                 <TextField
                                     label="Beginning Hour"
                                     type="time"
-                                    value={selectedOrder.beginingHour}
-                                    onChange={(e) => setSelectedOrder({ ...selectedOrder, beginingHour: e.target.value })}
+                                    value={editedOrder?.beginingHour}
+                                    onChange={(e) => setEditedOrder({ ...editedOrder!, beginingHour: e.target.value })}
                                     fullWidth
                                     margin="normal"
                                 />
                                 <TextField
                                     label="End Hour"
                                     type="time"
-                                    value={selectedOrder.endHour}
-                                    onChange={(e) => setSelectedOrder({ ...selectedOrder, endHour: e.target.value })}
+                                    value={editedOrder?.endHour}
+                                    onChange={(e) => setEditedOrder({ ...editedOrder!, endHour: e.target.value })}
                                     fullWidth
                                     margin="normal"
                                 />
                                 <TextField
                                     label="Note"
-                                    value={selectedOrder.note}
-                                    onChange={(e) => setSelectedOrder({ ...selectedOrder, note: e.target.value })}
+                                    value={editedOrder?.note}
+                                    onChange={(e) => setEditedOrder({ ...editedOrder!, note: e.target.value })}
                                     fullWidth
                                     margin="normal"
                                 />
