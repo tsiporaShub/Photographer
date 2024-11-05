@@ -29,6 +29,7 @@ const Orders: React.FC = () => {
     const [date, setDate] = useState('');
     const [beginingHour, setBeginningHour] = useState('');
     const [endHour, setEndHour] = useState('');
+    const [note, setNote] = useState('');
 
 
     useEffect(() => {
@@ -79,6 +80,7 @@ const Orders: React.FC = () => {
         setDate('');
         setBeginningHour('');
         setEndHour('');
+        setNote('');
         setOpenAddDialog(false);
     };
 
@@ -167,7 +169,8 @@ const Orders: React.FC = () => {
                 packageId: Number(packageId),
                 date: date.replace(/-/g, '/'),
                 beginingHour,
-                endHour
+                endHour,
+                note,
             };
             console.log(order);
 
@@ -202,13 +205,14 @@ const Orders: React.FC = () => {
             }
 
             const response = await addOrderPackage(order);
-            
+
             setOrders([...orders, response]);
             setPackageId('');
             setUserId('');
             setDate('');
             setBeginningHour('');
             setEndHour('');
+            setNote('');
             setOpenAddDialog(false);
         } catch (error: any) {
             Swal.fire({
@@ -299,6 +303,12 @@ const Orders: React.FC = () => {
                         onChange={(e) => setEndHour(e.target.value)}
                         style={inputStyle}
                     />
+                    <TextField
+                        label="Note"
+                        value={note}
+                        onChange={(e) => setNote(e.target.value)}
+                        style={inputStyle}
+                    />
                     <Button variant="contained" onClick={handleAddOrder} style={{ marginLeft: '120px' }}>Add Order</Button>
                 </DialogContent>
             </Dialog>
@@ -339,7 +349,7 @@ const Orders: React.FC = () => {
                         </>
                     )}
                     <DialogTitle><strong>{selectedOrder.packageId && photographyPackages.find(pkg => pkg.id === selectedOrder.packageId)?.type}</strong></DialogTitle>
-                    <DialogContent style={{ width: '300px', height: '280px' }}>
+                    <DialogContent style={{ width: '300px', height: '320px' }}>
                         {editMode ? (
                             <>
                                 <TextField
@@ -370,6 +380,13 @@ const Orders: React.FC = () => {
                                     fullWidth
                                     margin="normal"
                                 />
+                                <TextField
+                                    label="Note"
+                                    value={selectedOrder.note}
+                                    onChange={(e) => setSelectedOrder({ ...selectedOrder, note: e.target.value })}
+                                    fullWidth
+                                    margin="normal"
+                                />
                             </>
                         ) : (
                             <div style={{ marginLeft: '30px' }}>
@@ -388,7 +405,10 @@ const Orders: React.FC = () => {
                                 </Typography><br />
                                 <Typography variant="body1">
                                     <strong>Time:</strong> {selectedOrder.beginingHour} - {selectedOrder.endHour}
-                                </Typography>
+                                </Typography><br />
+                                {selectedOrder.note && <Typography variant="body1">
+                                    <strong>Note:</strong> {selectedOrder.note}
+                                </Typography>}
                             </div>
 
                         )}

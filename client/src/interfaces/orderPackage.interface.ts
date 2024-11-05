@@ -6,4 +6,5 @@ export interface OrderPackage
     date: string;
     beginingHour: string;
     endHour: string;
+    note: string;
 }

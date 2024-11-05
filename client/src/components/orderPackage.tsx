@@ -16,6 +16,7 @@ export default function OrderFormComponent() {
     const [date, setDate] = useState('');
     const [beginingHour, setBeginningHour] = useState('');
     const [endHour, setEndHour] = useState('');
+    const [note, setNote] = useState('');
     const [packages, setPackages] = useState([{ id: 0, type: '' }]);
 
     useEffect(() => {
@@ -70,20 +71,23 @@ export default function OrderFormComponent() {
                 packageId: Number(packageId),
                 date: date.replace(/-/g, '/'),
                 beginingHour,
-                endHour
+                endHour,
+                note
             };
-            console.log(order);
+
             const response = await addOrderPackage(order);
             console.log('Order added successfully:', response);
+
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
                 text: 'Order added successfully!',
-            });            
+            });
             setPackageId('');
             setDate('');
             setBeginningHour('');
             setEndHour('');
+            setNote('');
         } catch (error: any) {
             Swal.fire({
                 icon: 'error',
@@ -150,6 +154,12 @@ export default function OrderFormComponent() {
                 type="time"
                 value={endHour}
                 onChange={(e) => setEndHour(e.target.value)}
+                style={inputStyle}
+            />
+            <TextField
+                label="Note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
                 style={inputStyle}
             />
             <Button variant="contained" onClick={handleAddOrder}>Add Order</Button>

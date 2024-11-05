@@ -22,9 +22,10 @@ export const addOrderPackage = async function (req: Request, res: Response) {
             date: data.date,
             beginingHour: data.beginingHour,
             endHour: data.endHour,
+            note: data.note || '',
         }
         await isCorrectorderPackage(newOrderPackage);
-        try{
+        try {
             await isAvailableTime(newOrderPackage);
         } catch (err) {
             res.status(400).send('' + err)
@@ -55,9 +56,10 @@ export const updateOrderPackage = async function (req: Request, res: Response) {
             date: data.date,
             beginingHour: data.beginingHour,
             endHour: data.endHour,
+            note: data.note || '',
         }
         await isCorrectorderPackage(newOrderPackage);
-        try{
+        try {
             await isAvailableTime(newOrderPackage);
         } catch (err) {
             res.status(400).send('' + err)
@@ -76,6 +78,7 @@ export const updateOrderPackage = async function (req: Request, res: Response) {
                 date: data.date,
                 beginingHour: data.beginingHour,
                 endHour: data.endHour,
+                note: data.note || '',
             }
         })
         res.send('Update ' + id + ' succeeded');
