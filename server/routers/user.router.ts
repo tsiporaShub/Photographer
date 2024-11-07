@@ -1,5 +1,5 @@
 import express from 'express';
-import checkAdminToken from '../middlewares/aouthenticatiom_admin.middleware';
+import checkAdminToken from '../middlewares/aouthentication_admin.middleware';
 import { get, signup, signin, put, deleteOne } from '../controllers/user.controller';
 
 const router = express.Router();

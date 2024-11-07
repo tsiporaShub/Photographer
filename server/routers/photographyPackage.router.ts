@@ -1,5 +1,5 @@
 import express from 'express';
-import checkAdminToken from '../middlewares/aouthenticatiom_admin.middleware';
+import checkAdminToken from '../middlewares/aouthentication_admin.middleware';
 import { get , post , put , deleteOne } from '../controllers/photographyPackage.controller';
 
 const router = express.Router();

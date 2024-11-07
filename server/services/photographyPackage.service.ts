@@ -10,6 +10,10 @@ export const getAllPhotographyPackages = async function (req: Request, res: Resp
 export const addPhotographyPackage = async function (req: Request, res: Response) {
     try {
         const data = req.body;
+        if (data.moneyToHour <= 0) {
+            res.status(409).send('The price must be positive');
+            return;
+        }
         const newPhotographyPackage = {
             id: data.id,
             type: data.type,
@@ -36,6 +40,10 @@ export const updatePhotographyPackage = async function (req: Request, res: Respo
         const id = req.params.id;
         if (await photographyPackage_model.findOne({ id }) === null) {
             res.status(404).send('photography package not found')
+            return;
+        }
+        if (data.moneyToHour <= 0) {
+            res.status(409).send('The price must be positive');
             return;
         }
         await photographyPackage_model.updateOne({

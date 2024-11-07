@@ -1,7 +1,7 @@
 import express from 'express';
 import { get, post, put, deleteOne } from '../controllers/orderPackage.controller';
 import checkUserToken from '../middlewares/aouthentication_user.middleware';
-import checkAdminToken from '../middlewares/aouthenticatiom_admin.middleware';
+import checkAdminToken from '../middlewares/aouthentication_admin.middleware';
 
 const router = express.Router();
 
