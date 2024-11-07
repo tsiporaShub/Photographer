@@ -14,10 +14,10 @@ export default function OrderFormComponent() {
     const userId: number = useSelector((state: any) => (state.userReducer.currentUser.id));
     const [packageId, setPackageId] = useState('');
     const [date, setDate] = useState('');
-    const [beginingHour, setBeginningHour] = useState('');
+    const [beginingHour, setBeginingHour] = useState('');
     const [endHour, setEndHour] = useState('');
     const [note, setNote] = useState('');
-    const [packages, setPackages] = useState([{ id: 0, type: '' }]);
+    const [packages, setPackages] = useState([{ id: 0, type: '', moneyToHour: 0 }]);
 
     useEffect(() => {
         const fetchPhotographyPackage = async () => {
@@ -65,29 +65,51 @@ export default function OrderFormComponent() {
                 return;
             }
 
-            const order: OrderPackage = {
-                id: 0,
-                userId,
-                packageId: Number(packageId),
-                date: date.replace(/-/g, '/'),
-                beginingHour,
-                endHour,
-                note
-            };
-
-            const response = await addOrderPackage(order);
-            console.log('Order added successfully:', response);
+            const selectedPackage = packages.find(item => item.id === Number(packageId));
+            const totalHours = (new Date(`2000-01-01T${endHour}:00`).getTime() - new Date(`2000-01-01T${beginingHour}:00`).getTime()) / 3600000;
+            const totalPrice = selectedPackage!.moneyToHour * totalHours;
 
             Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Order added successfully!',
+                icon: 'info',
+                title: 'Total Price',
+                text: `Total Price: $${totalPrice.toFixed(2)}`,
+                showCancelButton: true,
+                confirmButtonText: 'Continue',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const order: OrderPackage = {
+                        id: 0,
+                        userId,
+                        packageId: Number(packageId),
+                        date: date.replace(/-/g, '/'),
+                        beginingHour,
+                        endHour,
+                        note
+                    };
+
+                    addOrderPackage(order).then((response) => {
+                        console.log('Order added successfully:', response);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Order added successfully!',
+                        });
+                        setPackageId('');
+                        setDate('');
+                        setBeginingHour('');
+                        setEndHour('');
+                        setNote('');
+                    }).catch((error: any) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: error.response.data,
+                        });
+                    });
+                }
             });
-            setPackageId('');
-            setDate('');
-            setBeginningHour('');
-            setEndHour('');
-            setNote('');
         } catch (error: any) {
             Swal.fire({
                 icon: 'error',
@@ -130,7 +152,10 @@ export default function OrderFormComponent() {
                 >
                     {packages.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
-                            {option.type}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                                <span style={{ marginRight: 'auto' }}>{`${option.type}`}</span>
+                                <span style={{ marginLeft: 'auto' }}>{`${option.moneyToHour}$ per hour`}</span>
+                            </div>
                         </MenuItem>
                     ))}
                 </Select>
@@ -143,10 +168,10 @@ export default function OrderFormComponent() {
                 style={inputStyle}
             />
             <TextField
-                label="Beginning Hour"
+                label="Begining Hour"
                 type="time"
                 value={beginingHour}
-                onChange={(e) => setBeginningHour(e.target.value)}
+                onChange={(e) => setBeginingHour(e.target.value)}
                 style={inputStyle}
             />
             <TextField

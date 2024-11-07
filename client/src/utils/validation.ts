@@ -55,8 +55,8 @@ export const validateDate = (date: string) => {
     return '';
 };
 
-export const validateHours = (beginningHour: string, endHour: string) => {
-    const beginningTime = new Date(`01/01/2000 ${beginningHour}`);
+export const validateHours = (beginingHour: string, endHour: string) => {
+    const beginningTime = new Date(`01/01/2000 ${beginingHour}`);
     const endTime = new Date(`01/01/2000 ${endHour}`);
 
     const timeDiffInMinutes = (endTime.getTime() - beginningTime.getTime()) / 60000;

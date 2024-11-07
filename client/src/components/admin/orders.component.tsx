@@ -167,58 +167,42 @@ const Orders: React.FC = () => {
 
     const handleAddOrder = async () => {
         try {
-            if (!isTokenValid()) { return; }
-            const order: OrderPackage = {
-                id: 0,
-                userId: Number(userId),
-                packageId: Number(packageId),
-                date: date.replace(/-/g, '/'),
-                beginingHour,
-                endHour,
-                note,
-            };
-            console.log(order);
+            if (!isTokenValid()) {
+                return;
+            }
 
-            const fieldsError = validateFields(String(order.packageId), order.date, order.beginingHour, order.endHour);
-            if (fieldsError || !userId) {
+            const order = createOrderObject(userId, packageId, date, beginingHour, endHour, note);
+
+            const validationError = validateOrder(order);
+            if (validationError) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: fieldsError || 'Please select user',
+                    text: validationError,
                 });
                 return;
             }
 
-            const dateError = validateDate(order.date);
-            if (dateError) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: dateError,
-                });
-                return;
-            }
+            const selectedPackage = photographyPackages.find(item => item.id === Number(packageId));
+            const totalHours = (new Date(`2000-01-01T${endHour}:00`).getTime() - new Date(`2000-01-01T${beginingHour}:00`).getTime()) / 3600000;
+            const totalPrice = selectedPackage!.moneyToHour * totalHours;
 
-            const hoursError = validateHours(order.beginingHour, order.endHour);
-            if (hoursError) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: hoursError,
-                });
-                return;
-            }
+            Swal.fire({
+                icon: 'info',
+                title: 'Total Price',
+                text: `Total Price: ${totalPrice.toFixed(2)}`,
+                showCancelButton: true,
+                confirmButtonText: 'Continue',
+                cancelButtonText: 'Cancel',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await addOrderPackage(order);
 
-            const response = await addOrderPackage(order);
-
-            setOrders([...orders, response]);
-            setPackageId('');
-            setUserId('');
-            setDate('');
-            setBeginningHour('');
-            setEndHour('');
-            setNote('');
-            setOpenAddDialog(false);
+                    setOrders([...orders, response]);
+                    clearOrderFields();
+                    setOpenAddDialog(false);
+                }
+            });
         } catch (error: any) {
             Swal.fire({
                 icon: 'error',
@@ -227,6 +211,49 @@ const Orders: React.FC = () => {
             });
         }
     };
+
+
+
+    const createOrderObject = (userId: string, packageId: string, date: string, beginingHour: string, endHour: string, note: string): OrderPackage => {
+        return {
+            id: 0,
+            userId: Number(userId),
+            packageId: Number(packageId),
+            date: date.replace(/-/g, '/'),
+            beginingHour,
+            endHour,
+            note,
+        };
+    };
+
+    const validateOrder = (order: OrderPackage): string | null => {
+        const fieldsError = validateFields(String(order.packageId), order.date, order.beginingHour, order.endHour);
+        if (fieldsError || !order.userId) {
+            return fieldsError || 'Please select user';
+        }
+
+        const dateError = validateDate(order.date);
+        if (dateError) {
+            return dateError;
+        }
+
+        const hoursError = validateHours(order.beginingHour, order.endHour);
+        if (hoursError) {
+            return hoursError;
+        }
+
+        return null;
+    };
+
+    const clearOrderFields = () => {
+        setPackageId('');
+        setUserId('');
+        setDate('');
+        setBeginningHour('');
+        setEndHour('');
+        setNote('');
+    };
+
 
 
     const inputStyle: React.CSSProperties = {
@@ -282,7 +309,10 @@ const Orders: React.FC = () => {
                         >
                             {photographyPackages.map((option) => (
                                 <MenuItem key={option.id} value={option.id}>
-                                    {option.type}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                                        <span style={{ marginRight: 'auto' }}>{`${option.type}`}</span>
+                                        <span style={{ marginLeft: 'auto' }}>{`${option.moneyToHour}$ per hour`}</span>
+                                    </div>
                                 </MenuItem>
                             ))}
                         </Select>
